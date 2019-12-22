@@ -12,7 +12,7 @@ The tool not suitable for heavy workloads (like perfomance testing).
 * AVRO schemes repository refresh on the fly;
 * S3 schemes provider;
 * Clusters/topics/partitions introspection;
-* Live update;
+* Live update.
 
 ## Architecture
 Simple REST application based on Angular on frontend and Spring Boot on backend side.
