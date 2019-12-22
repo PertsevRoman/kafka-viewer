@@ -1,4 +1,5 @@
 # Kafka Viewer CI
+[![Build Status](https://travis-ci.org/PertsevRoman/kafka-viewer.svg?branch=develop)](https://travis-ci.org/PertsevRoman/kafka-viewer)
 Kafka Viewer CI repository
 
 ## Motivation
