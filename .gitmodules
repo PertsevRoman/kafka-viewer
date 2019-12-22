@@ -1,6 +1,6 @@
 [submodule "kv-frontend"]
 	path = kv-frontend
-	url = git@github.com:PertsevRoman/kv-frontend.git
+	url = https://github.com/PertsevRoman/kv-frontend.git
 [submodule "kv-backend"]
 	path = kv-backend
-	url = git@github.com:PertsevRoman/kv-backend.git
+	url = https://github.com/PertsevRoman/kv-backend.git
