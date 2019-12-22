@@ -104,7 +104,7 @@ public class AvroDeserializer<T extends SpecificRecordBase> implements ExtendedD
             return parsedMessage;
         }
 
-        // avro hash header
+        // avro hash header TODO implement type detection custom filters
         Header avroSchemaHash = headers
                 .lastHeader("AVRO-SCHEMA-HASH");
 
