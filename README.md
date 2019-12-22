@@ -34,3 +34,6 @@ to family with backend and frontend development flows separately. However, the f
 standard Spring Boot and Angular development flows. 
 
 ## A lot of thanks
+
+## License
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
