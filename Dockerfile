@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:experimental
 #build frontend
 FROM node:10 as front_build
 
@@ -15,11 +16,13 @@ FROM openjdk:8 as backend_build
 
 WORKDIR /src
 
+ENV HOME ""
+
 ADD backend /src/backend
 
 WORKDIR /src/backend
 
-RUN ./mvnw clean package -DskipTests=true -q
+RUN --mount=type=cache,target=$HOME/.m2 ./mvnw clean package -DskipTests=true -q
 
 # composite to single
 FROM openjdk:8
