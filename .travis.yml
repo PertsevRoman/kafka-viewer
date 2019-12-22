@@ -26,6 +26,7 @@ script:
   - cd ..
   - cd backend
   - ./mvnw clean package -DskipTests=true -q
+  - cd ..
   - docker build . -t kafka-viewer
 
 deploy:
