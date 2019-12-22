@@ -8,3 +8,9 @@ branches:
 
 script:
   - docker build . -t kafka-viewer
+
+deploy:
+  provider: script
+  script: bash docker_push
+  on:
+    branch: master
