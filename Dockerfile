@@ -3,9 +3,9 @@ FROM node:10 as front_build
 
 WORKDIR /src
 
-ADD kv-frontend /src/kv-frontend
+ADD frontend /src/frontend
 
-WORKDIR /src/kv-frontend
+WORKDIR /src/frontend
 
 RUN npm i
 RUN npm run build:prod
@@ -15,9 +15,9 @@ FROM openjdk:8 as backend_build
 
 WORKDIR /src
 
-ADD kv-backend /src/kv-backend
+ADD backend /src/backend
 
-WORKDIR /src/kv-backend
+WORKDIR /src/backend
 
 RUN ./mvnw clean install -DskipTests=true
 
@@ -27,8 +27,8 @@ FROM openjdk:8
 WORKDIR /app
 
 # collect artifacts
-COPY --from=front_build /src/kv-frontend/dist/* /app/front
-COPY --from=backend_build /src/kv-backend/target/kv-backend.jar /app/backend/kv-backend.jar
+COPY --from=front_build /src/frontend/dist/* /app/front
+COPY --from=backend_build /src/backend/target/kv-backend.jar /app/backend/kv-backend.jar
 
 # verify FE files
 WORKDIR /app/front
