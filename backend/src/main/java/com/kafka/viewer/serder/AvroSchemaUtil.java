@@ -81,7 +81,7 @@ public class AvroSchemaUtil {
 
     static Schema matchBundledSchema(byte[] avroChecksum, String schemaClasspath) {
         try {
-            Schema schemas[] = new Schema[1];
+            Schema[] schemas = new Schema[1];
             schemas[0] = getSchemaFromClasspath(schemaClasspath);
             return matchSchema( avroChecksum, Stream.concat(
                     Arrays.stream(bundledSchemas),
