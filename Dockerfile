@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:experimental
 #build frontend
 FROM node:10 as front_build
 
@@ -22,7 +21,7 @@ ADD backend /src/backend
 
 WORKDIR /src/backend
 
-RUN --mount=type=cache,target=$HOME/.m2 ./mvnw clean package -DskipTests=true -q
+RUN ./mvnw clean package -DskipTests=true -q
 
 # composite to single
 FROM openjdk:8
