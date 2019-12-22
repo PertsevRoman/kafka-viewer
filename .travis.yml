@@ -11,6 +11,7 @@ node_js:
   - 10
 
 cache:
+  npm: true
   directories:
     - $HOME/.m2
     - node_modules
