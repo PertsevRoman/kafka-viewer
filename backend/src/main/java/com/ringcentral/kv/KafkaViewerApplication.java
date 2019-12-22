@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IntelliDumpApplication {
+public class KafkaViewerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(IntelliDumpApplication.class, args);
+        SpringApplication.run(KafkaViewerApplication.class, args);
     }
 
 }

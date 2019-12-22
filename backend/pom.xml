@@ -86,7 +86,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.0.1.RELEASE</version>
                 <configuration>
-                    <mainClass>com.ringcentral.kv.IntelliDumpApplication</mainClass>
+                    <mainClass>com.ringcentral.kv.KafkaViewerApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>
