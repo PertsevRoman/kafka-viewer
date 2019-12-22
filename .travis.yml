@@ -1,7 +1,11 @@
+language: java
 dist: xenial
 
 services:
   - docker
+
+jdk:
+  - openjdk8
 
 node_js:
   - 10
@@ -11,15 +15,13 @@ cache:
     - $HOME/.m2
     - node_modules
 
-jdk:
-  - openjdk8
-
 branches:
   only:
     - develop
     - master
 
 script:
+  - jdk_switcher use openjdk8
   - cd frontend
   - npm ci --quiet
   - npm run build:prod
