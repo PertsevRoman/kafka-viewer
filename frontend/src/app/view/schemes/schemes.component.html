@@ -1,0 +1,71 @@
+<div class="schemes-layout">
+  <div class="tools">
+    <button
+      nz-button
+      nzType="primary"
+      (click)="invokeUpdate()"
+      nz-tooltip nzTitle="Refresh S3 repository schemes">
+      <i nz-icon nzType="sync"></i>
+      Refresh schemes
+    </button>
+  </div>
+  <div class="bundled-view">
+    <h3>Bundled schemes</h3>
+    <cdk-virtual-scroll-viewport
+      itemSize="40"
+      class="bundled-container">
+      <nz-list>
+        <nz-list-item
+          *cdkVirtualFor="let item of bundledSchemes$ | async"
+          (click)="setSchema(item.schema)"
+          class="item">
+          <nz-skeleton *ngIf="!item" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+          <nz-list-item-meta
+            class="meta"
+            *ngIf="item"
+            [nzTitle]="nzTitle"
+            [nzDescription]="item.schema | slice:0:57 | ellipsis">
+            <ng-template #nzTitle>
+              <div class="title">
+                <span class="cl-name">{{ item.clName }}</span>
+              </div>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-list-item>
+      </nz-list>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <div class="s3-view">
+    <h3>S3 schemes</h3>
+    <cdk-virtual-scroll-viewport
+      itemSize="40"
+      class="s3-container">
+      <nz-list>
+        <nz-list-item
+          *cdkVirtualFor="let item of s3Schemes$ | async"
+          (click)="setSchema(item.schema)"
+          class="item">
+          <nz-skeleton *ngIf="!item" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+          <nz-list-item-meta
+            class="meta"
+            *ngIf="item"
+            [nzTitle]="nzTitle"
+            [nzDescription]="item.schema | slice:0:57 | ellipsis">
+            <ng-template #nzTitle>
+              <div class="title">
+                <span class="cl-name">{{ item.key }}</span>
+              </div>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-list-item>
+      </nz-list>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <div class="schema-description">
+    <div class="description-container">
+      <div class="json-view-container">
+        <ngx-json-viewer [json]="schema$ | async"></ngx-json-viewer>
+      </div>
+    </div>
+  </div>
+</div>

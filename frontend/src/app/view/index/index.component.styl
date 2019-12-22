@@ -1,0 +1,114 @@
+:host
+  height 100%
+
+.m-l-5
+  margin-left 5px
+
+.m-l-10
+  margin-left 10px
+
+.json-view-container
+  overflow-y auto
+
+.records-list-view
+  height 100%
+  margin-top 15px
+  display grid
+  grid-template-rows 50px 1fr
+  grid-template-areas "tools head" "list description"
+  grid-template-columns 1fr 1fr
+
+  .tools
+    grid-area tools
+    display flex
+    align-items center
+    justify-content stretch
+    padding-right 10px
+
+  .list
+    grid-area list
+    display flex
+    flex-direction column
+    padding-right 10px
+    position relative
+
+    .list-container
+      flex-grow 1
+
+      .list-item
+        max-height 73px
+        height 73px
+        padding 0
+        cursor pointer
+
+      .title
+        display flex
+        justify-content space-between
+        flex-wrap wrap
+
+        .index
+          font-size .75em
+          padding-right 5px
+          color #999
+
+        .time
+          white-space nowrap
+          font-size 0.8em
+          color #bbb
+
+  .head
+    grid-area head
+    display flex
+    align-items center
+    justify-content space-between
+
+  .description
+    grid-area description
+    display flex
+    flex-direction column
+    position relative
+    overflow-y auto
+
+    .content
+      .json-view-container
+        flex-grow 1
+
+nz-list
+  padding 24px
+
+.pointer
+  cursor pointer
+
+.fg-0
+  flex-grow 0
+
+.fg-1
+  flex-grow 1
+
+.scale
+  &:hover
+    transform: scale(1.5)
+
+  transition transform .3s
+  margin: 0 auto;
+
+.flex-row
+  display flex
+
+.ai-center
+  align-items center
+
+.jc-space-between
+  justify-content space-between
+
+.mr-description
+  .record
+    white-space: nowrap;
+    overflow: hidden;
+    user-select none
+    max-width 300px
+    text-overflow ellipsis
+
+  .partition
+    color #888
+    user-select none

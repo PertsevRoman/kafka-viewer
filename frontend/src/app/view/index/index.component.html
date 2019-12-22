@@ -1,0 +1,88 @@
+<div class="flex-row ai-center" *ngIf="!(dataPresenceState$ | async)">
+  <h3>No topics provided by broker</h3>
+  <div class="m-l-10 pointer" (click)="refreshData()">
+    <i class="scale" nz-icon nzType="sync" nz-tooltip nzTitle="Reload data"></i>
+  </div>
+</div>
+<div class="records-list-view" *ngIf="dataPresenceState$ | async">
+  <div class="tools">
+    <span class="fg-0" nz-text><strong>Topic</strong></span>
+    <nz-select class="m-l-5 fg-0" style="width: 250px;"
+               [ngModel]="currentTopicId$ | async"
+               (ngModelChange)="setTopic($event)"
+               [nzLoading]="topicsLoad$ | async"
+               [nzDisabled]="(topicsLoad$ | async) || (autoUpdate$ | async)"
+               nzPlaceHolder="Select topic">
+      <nz-option *ngFor="let topic of topics$ | async"
+                 [nzValue]="topic.id"
+                 [nzLabel]="topic.name"></nz-option>
+    </nz-select>
+    <span class="m-l-10 fg-0" nz-text><strong>Partition</strong></span>
+    <nz-select class="m-l-5 fg-0" style="width: 120px;"
+               [ngModel]="currentPartitionIndex$ | async"
+               (ngModelChange)="setPartitionIndex($event)"
+               [nzLoading]="partitionsLoad$ | async"
+               [nzDisabled]="(partitionsLoad$ | async) || (autoUpdate$ | async)"
+               nzPlaceHolder="Select partition">
+      <nz-option *ngFor="let partition of currentPartitions$ | async"
+                 [nzValue]="partition.index"
+                 [nzLabel]="partition.index + ' (' + partition.messageCount + ')'"></nz-option>
+    </nz-select>
+    <button [disabled]="autoUpdate$ | async" class="m-l-5 pointer" nz-button nz-tooltip
+            [nzTitle]="(direction$ | async) == 'asc' ? 'From first to last' : 'From last to first'"
+            nzType="default" nzShape="circle" (click)="toggleDirection()">
+      <i class="scale" nz-icon
+         nzTheme="outline" [nzType]="(direction$ | async) == 'asc' ? 'sort-ascending' : 'sort-descending'"></i>
+    </button>
+  </div>
+  <div class="list">
+    <cdk-virtual-scroll-viewport
+      [itemSize]="73"
+      class="list-container">
+      <nz-list>
+        <nz-list-item
+          class="list-item"
+          *cdkVirtualFor="let item of scrollSourceEffect"
+          (click)="setRecord(item)">
+          <nz-skeleton *ngIf="!item" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
+          <nz-list-item-meta
+            *ngIf="item"
+            [nzTitle]="title"
+            [nzDescription]="description">
+            <ng-template #title>
+              <div class="title">
+                <span>
+                  <span class="index">{{item.index + 1}}&#46;</span>
+                  <span class="cl-name">{{ item.type }}</span>
+                </span>
+                <span class="time">{{ item.timestamp | date:format() }}</span>
+              </div>
+            </ng-template>
+            <ng-template #description>
+              <div class="mr-description flex-row ai-center jc-space-between">
+                <span class="record">{{ item.record | json }}</span>
+                <span class="partition">{{ item.partition }}</span>
+              </div>
+            </ng-template>
+          </nz-list-item-meta>
+        </nz-list-item>
+      </nz-list>
+    </cdk-virtual-scroll-viewport>
+  </div>
+  <div class="head">
+    <span nz-text><strong>Body</strong></span>
+    <label class="m-l-10"
+           nz-checkbox
+           (nzCheckedChange)="decodedChange($event)"
+           [ngModel]="decodeState$ | async">
+      Decode
+    </label>
+  </div>
+  <div class="description">
+    <div class="content">
+      <div class="json-view-container">
+        <ngx-json-viewer [json]="currentRecord$ | async | decodeBase64:(decodeState$ | async)"></ngx-json-viewer>
+      </div>
+    </div>
+  </div>
+</div>

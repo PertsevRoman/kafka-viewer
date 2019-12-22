@@ -1,0 +1,58 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo" [class.minimized]="isCollapsed">
+      <a href="https://ringcentral.com/" target="_blank">
+        <img src="/assets/rc_logo.svg" alt="logo">
+      </a>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-submenu nzOpen nzTitle="Tools" nzIcon="setting">
+        <ul>
+          <li nz-menu-item [nzMatchRouter]="true" [nzMatchRouterExact]="true">
+            <a routerLink="">Query</a>
+          </li>
+          <li nz-menu-item [nzMatchRouter]="true"
+              [nzMatchRouterExact]="true" *ngIf="selectS3RepoAvailable$ | async">
+            <a routerLink="schemes">Schemes</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <i class="trigger"
+               nz-icon
+               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+        </span>
+        <span nz-text class="m-r-10"><strong>Kafka Cluster</strong></span>
+        <nz-select style="width: 150px;"
+                   (ngModelChange)="clusterChange($event)"
+                   [nzLoading]="clustersLoad$ | async"
+                   [nzDisabled]="(clustersLoad$ | async) || (autoUpdate$ | async)"
+                   [ngModel]="currentClusterIndex$ | async">
+          <nz-option *ngFor="let cluster of currentClusters$ | async"
+                     [nzValue]="cluster.index"
+                     [nzLabel]="cluster.host"></nz-option>
+        </nz-select>
+        <button class="m-l-10" nz-button
+                (click)="toggleAutoUpdate()"
+                [nzType]="(autoUpdate$ | async) ? 'primary' : 'default'">
+          <i nz-icon nzType="play-circle"></i>Auto update
+        </button>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

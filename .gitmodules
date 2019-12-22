@@ -1,6 +1,0 @@
-[submodule "kv-frontend"]
-	path = kv-frontend
-	url = https://github.com/PertsevRoman/kv-frontend.git
-[submodule "kv-backend"]
-	path = kv-backend
-	url = https://github.com/PertsevRoman/kv-backend.git

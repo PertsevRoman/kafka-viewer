@@ -1,0 +1,51 @@
+.schemes-layout
+  display grid
+  grid-template-rows 40px 1fr 1fr
+  grid-template-columns 1fr 1fr
+  grid-template-areas "tools description" "bundled-view description" "s3-view description"
+  height 100%
+
+  .tools
+    display flex
+    justify-content flex-end
+
+  .bundled-view
+    grid-area bundled-view
+
+  .s3-view
+    grid-area s3-view
+
+  .schema-description
+    grid-area description
+    display flex
+    flex-direction column
+    position relative
+    overflow-y auto
+
+    .description-container
+      .json-view-container
+        flex-grow 1
+
+  .bundled-view, .s3-view
+    display flex
+    flex-direction column
+
+    h3
+      flex-grow 0
+
+    .bundled-container, .s3-container
+      flex-grow 1
+
+      .item
+        height 50px
+        padding 0
+
+        .meta
+          padding-top 5px
+          padding-bottom 5px
+
+.m-r-10
+  margin-right 10px
+
+.m-l-10
+  margin-left 10px
