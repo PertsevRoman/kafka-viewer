@@ -1,36 +1,10 @@
-#build frontend
-FROM node:10 as front_build
-
-WORKDIR /src
-
-ADD frontend /src/frontend
-
-WORKDIR /src/frontend
-
-RUN npm ci --quiet
-RUN npm run build:prod
-
-# build backend
-FROM openjdk:8 as backend_build
-
-WORKDIR /src
-
-ENV HOME ""
-
-ADD backend /src/backend
-
-WORKDIR /src/backend
-
-RUN ./mvnw clean package -DskipTests=true -q
-
-# composite to single
 FROM openjdk:8
 
 WORKDIR /app
 
 # collect artifacts
-COPY --from=front_build /src/frontend/dist/* /app/front
-COPY --from=backend_build /src/backend/target/kv-backend.jar /app/backend/kv-backend.jar
+COPY frontend/dist/* /app/front
+COPY backend/target/kv-backend.jar /app/backend/kv-backend.jar
 
 # verify FE files
 WORKDIR /app/front

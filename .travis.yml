@@ -1,5 +1,18 @@
+dist: xenial
+
 services:
   - docker
+
+node_js:
+  - 10
+
+cache:
+  directories:
+    - $HOME/.m2
+    - node_modules
+
+jdk:
+  - openjdk8
 
 branches:
   only:
@@ -7,6 +20,12 @@ branches:
     - master
 
 script:
+  - cd frontend
+  - npm ci --quiet
+  - npm run build:prod
+  - cd ..
+  - cd backend
+  - ./mvnw clean package -DskipTests=true -q
   - docker build . -t kafka-viewer
 
 deploy:
