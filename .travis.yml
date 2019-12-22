@@ -1,0 +1,13 @@
+services:
+  - docker
+
+git:
+  submodules: true
+
+branches:
+  only:
+    - develop
+    - master
+
+script:
+  - docker build . -t kafka-viewer
