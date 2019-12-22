@@ -5,7 +5,7 @@ services:
   - docker
 
 jdk:
-  - openjdk8
+  - openjdk11
 
 node_js:
   - 10
@@ -21,7 +21,6 @@ branches:
     - master
 
 script:
-  - jdk_switcher use openjdk8
   - cd frontend
   - npm ci --quiet
   - npm run build:prod
