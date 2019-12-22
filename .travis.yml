@@ -1,9 +1,6 @@
 services:
   - docker
 
-git:
-  submodules: true
-
 branches:
   only:
     - develop
