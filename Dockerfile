@@ -19,7 +19,7 @@ ADD backend /src/backend
 
 WORKDIR /src/backend
 
-RUN ./mvnw clean install -DskipTests=true
+RUN ./mvnw clean install -DskipTests=true -q
 
 # composite to single
 FROM openjdk:8
