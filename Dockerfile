@@ -28,7 +28,7 @@ WORKDIR /app
 
 # collect artifacts
 COPY --from=front_build /src/kv-frontend/dist/* /app/front
-COPY --from=backend_build /src/kv-backend/target/kv-backend.jar /app/backend/kv-backend.jar
+COPY --from=backend_build /src/kv-backend/target/kv-backend-*.jar /app/backend/kv-backend.jar
 
 # verify FE files
 WORKDIR /app/front
