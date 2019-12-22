@@ -43,6 +43,9 @@ public class SchemesControllerTests extends BaseTest {
         S3SchemaResponse bundledSchemas =
                 unmarshalResponse(mvcResult, S3SchemaResponse.class);
 
+
+        // TODO migrate to AssertJ
+        // TODO Use kafka mocks and mockito (learn kafka testing)
         assertTrue(bundledSchemas.getS3Schemas().size() > 0);
     }
 }
