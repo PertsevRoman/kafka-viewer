@@ -7,7 +7,7 @@ ADD frontend /src/frontend
 
 WORKDIR /src/frontend
 
-RUN npm i
+RUN npm ci
 RUN npm run build:prod
 
 # build backend
