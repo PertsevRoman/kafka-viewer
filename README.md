@@ -1,6 +1,6 @@
-# Kafka Viewer CI
+# Kafka Viewer
 [![Build Status](https://travis-ci.org/PertsevRoman/kafka-viewer.svg?branch=develop)](https://travis-ci.org/PertsevRoman/kafka-viewer)
-Kafka Viewer CI repository
+Kafka Viewer repository
 
 ## Motivation
 This tool was developed as simple and user-friendly Kafka topics viewer.
