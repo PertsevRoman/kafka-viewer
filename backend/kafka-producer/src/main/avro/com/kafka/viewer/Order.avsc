@@ -1,0 +1,11 @@
+{
+  "namespace": "com.kafka.viewer",
+  "type": "record",
+  "doc": "Order example",
+  "name": "Order",
+  "fields" : [
+    {"name": "id", "type": "long", "default": -1 },
+    {"name": "total", "type": "double", "default": 0.0  },
+    {"name": "timestamp", "type": "long", "default": -1  }
+  ] 
+}

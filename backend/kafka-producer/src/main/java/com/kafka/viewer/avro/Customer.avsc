@@ -1,8 +1,0 @@
-{
-  "type": "record",
-  "name": "com.kafka.viewer.Customer",
-  "fields" : [
-    {"name": "id", "type": "long"},
-    {"name": "name", "type": "string" }
-  ]
-}

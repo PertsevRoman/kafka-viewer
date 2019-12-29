@@ -1,0 +1,10 @@
+{
+  "namespace": "com.kafka.viewer",
+  "doc": "Customer example",
+  "type": "record",
+  "name": "Customer",
+  "fields" : [
+    {"name": "id", "type": "long", "default": -1 },
+    {"name": "name", "type": "string", "default": "NONE" }
+  ]
+}
