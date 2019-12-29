@@ -1,7 +1,5 @@
 ## Kafka Viewer backend
 
-[![Build Status](https://travis-ci.com/PertsevRoman/kv-backend.svg?branch=develop)](https://travis-ci.com/PertsevRoman/kv-backend)
-
 ### Compile and run
 
 1. Clone the project
@@ -20,7 +18,7 @@
 
 #### Environment variables  
 * ``STATIC_LOCATION`` &mdash; static files location directory (``spa`` profile only);
-* ``KAFKA_HOST`` &mdash; Kafka broker endpoint; you can add multiple clusters with `;` delimiter
+* ``KAFKA_BOOTSTRAP_SERVERS`` &mdash; Kafka broker endpoint; you can add multiple clusters with `;` delimiter
 
 Also you have to set AWS environment variables to access AVRO repository:
 
