@@ -1,0 +1,9 @@
+{
+  "type": "record",
+  "name": "com.kafka.viewer.Order",
+  "fields" : [
+    {"name": "id", "type": "long"},
+    {"name": "total", "type": "double" },
+    {"name": "timestamp", "type": "long" }
+  ]
+}
