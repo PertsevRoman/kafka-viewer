@@ -10,4 +10,9 @@ public class ProducerProperty {
      * Kafka topic for publish
      */
     public static final String KAFKA_TOPIC = "kafka.topic";
+
+    /**
+     * Generator class
+     */
+    public static final String GENERATOR_CLASS = "generator.class";
 }

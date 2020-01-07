@@ -14,9 +14,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <avro.version>1.9.1</avro.version>
+
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
     <assertj.version>3.14.0</assertj.version>
+    <kafka.version>2.4.0</kafka.version>
+    <avro.version>1.9.1</avro.version>
   </properties>
 
   <dependencies>
@@ -33,6 +35,12 @@
       <artifactId>assertj-core</artifactId>
       <version>${assertj.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>${kafka.version}</version>
     </dependency>
 
     <!--  AVRO dependencies  -->
