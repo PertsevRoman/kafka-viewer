@@ -6,6 +6,13 @@ phases:
       java: openjdk11
       nodejs: 10
       docker: 18
+  pre_build:
+    commands:
+      - java -version
+      - mvn --version
+      - node --version
+      - npm --version
+      - docker --version
   build:
     commands:
       - cd frontend
