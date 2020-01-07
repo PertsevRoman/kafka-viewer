@@ -13,6 +13,6 @@ phases:
       - npm run build:prod
       - cd ..
       - cd backend
-      - ./mvnw clean package -DskipTests=true -q
+      - mvn clean package -DskipTests=true -q
       - cd ..
       - docker build . -t kafka-viewer

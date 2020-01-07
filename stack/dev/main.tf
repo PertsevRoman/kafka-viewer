@@ -32,8 +32,8 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         {
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/codebuild/${var.project_name}",
-                "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/codebuild/${var.project_name}:*"
+                "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/codebuild/${var.project_name}-build",
+                "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/codebuild/${var.project_name}-build:*"
             ],
             "Action": [
                 "logs:CreateLogGroup",
@@ -91,5 +91,21 @@ resource "aws_codebuild_project" "code-build" {
     type = "GITHUB"
     location = var.github_location
     git_clone_depth = 1
+  }
+}
+
+resource "aws_codebuild_webhook" "all_push_webhook" {
+  project_name = "${var.project_name}-build"
+
+  filter_group {
+    filter {
+      type = "EVENT"
+      pattern = "PUSH"
+    }
+
+    filter {
+      type = "HEAD_REF"
+      pattern = "^refs/heads/develop$"
+    }
   }
 }
