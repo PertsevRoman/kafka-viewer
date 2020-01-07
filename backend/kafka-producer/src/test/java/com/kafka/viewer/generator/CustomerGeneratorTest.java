@@ -26,7 +26,6 @@ class CustomerGeneratorTest {
 
     // ID boundary
     private Long idMin = 0L;
-    private Long idMax = 800L;
 
     @BeforeEach
     public void init() {
@@ -37,7 +36,6 @@ class CustomerGeneratorTest {
         Properties generatorProperties = new Properties();
 
         generatorProperties.setProperty(CustomerGenerator.CustomerGeneratorProperty.ID_MIN, String.valueOf(idMin));
-        generatorProperties.setProperty(CustomerGenerator.CustomerGeneratorProperty.ID_MAX, String.valueOf(idMax));
         generatorProperties.setProperty(CustomerGenerator.CustomerGeneratorProperty.COUNT, String.valueOf(count));
         generatorProperties.setProperty(CustomerGenerator.CustomerGeneratorProperty.NAMES, namesBlock);
 
@@ -67,6 +65,6 @@ class CustomerGeneratorTest {
     @DisplayName("Customer generation ID test")
     public void customerGenerationIdTest() {
         customerStream.map(Customer::getId)
-                .forEach(id -> assertThat(id).isBetween(idMin, idMax));
+                .forEach(id -> assertThat(id).isBetween(idMin, idMin + count));
     }
 }

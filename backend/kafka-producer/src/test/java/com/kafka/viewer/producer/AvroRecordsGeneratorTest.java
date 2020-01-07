@@ -1,20 +1,24 @@
-package com.kafka.viewer.generator;
+package com.kafka.viewer.producer;
 
 import com.kafka.viewer.avro.Order;
+import com.kafka.viewer.generator.OrderGenerator;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
+ * @author Roman Pertsev <roman.pertsev@nordigy.ru>
  */
-class OrderGeneratorTest {
-
-    private Stream<Order> ordersStream;
+class AvroRecordsGeneratorTest {
+    private AvroRecordsGenerator<Order> producer;
 
     // Records count
     private Long count = 100L;
@@ -26,8 +30,15 @@ class OrderGeneratorTest {
     private Long timestampMin = 10000L;
     private Long timestampMax = 50000L;
 
+    // Orders stream
+    private Stream<Order> ordersStream;
+
+    private Stream<ProducerRecord<Long, Order>> producerRecordStream;
+
     @BeforeEach
-    void setUp() {
+    void setUp() throws NoSuchMethodException,
+            NoSuchAlgorithmException, IllegalAccessException, InvocationTargetException {
+
         OrderGenerator orderGenerator = new OrderGenerator();
 
         Properties generatorProperties = new Properties();
@@ -42,29 +53,26 @@ class OrderGeneratorTest {
         generatorProperties.setProperty(OrderGenerator.OrderGeneratorProperty.COUNT, String.valueOf(count));
 
         ordersStream = orderGenerator.generateWith(generatorProperties);
+
+        producer = new AvroRecordsGenerator<>(Order.class);
+
+        producerRecordStream = producer.recordStream(ordersStream, "orders-topic");
     }
 
     @Test
-    @DisplayName("Order generation count test")
-    void orderGenerationCountTest() {
-        final long ordersCount = ordersStream.count();
+    @DisplayName("Producer count test")
+    void producerCountTest() {
+        final long recordsCount = producerRecordStream.count();
 
-        assertThat(ordersCount).isEqualTo(count);
+        assertThat(recordsCount).isEqualTo(count);
     }
 
     @Test
-    @DisplayName("Order generation ID test")
-    void orderGenerationIdTest() {
-        ordersStream
-                .map(Order::getId)
-                .forEach(id -> assertThat(id).isBetween(idMin, idMin + count));
-    }
-
-    @Test
-    @DisplayName("Order generation timestamp test")
-    void orderGenerationTimestampTest() {
-        ordersStream
-                .map(Order::getTimestamp)
-                .forEach(timestamp -> assertThat(timestamp).isBetween(timestampMin, timestampMax));
+    @DisplayName("Headers test")
+    void headersTest() {
+        producerRecordStream
+                .forEach(record -> assertThat(
+                        record.headers().lastHeader("AVRO-SCHEMA-HASH"))
+                            .isNotNull());
     }
 }
