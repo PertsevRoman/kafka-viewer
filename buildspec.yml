@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk11
+      nodejs: 10
+      docker: 18
+  build:
+    commands:
+      - cd frontend
+      - npm ci --quiet
+      - npm run build:prod
+      - cd ..
+      - cd backend
+      - ./mvnw clean package -DskipTests=true -q
+      - cd ..
+      - docker build . -t kafka-viewer
