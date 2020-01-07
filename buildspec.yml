@@ -15,11 +15,11 @@ phases:
       - docker --version
   build:
     commands:
+      - cd backend
+      - mvn clean package -DskipTests=true -q
+      - cd ..
       - cd frontend
       - npm ci --quiet
       - npm run build:prod
-      - cd ..
-      - cd backend
-      - mvn clean package -DskipTests=true -q
       - cd ..
       - docker build . -t kafka-viewer
