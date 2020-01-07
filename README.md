@@ -1,5 +1,5 @@
 # Kafka Viewer
-[![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoicTFDbGEvQ3JEZzVSc3MzYml4KzNZUnFKYWlwZmsraStXRkQ5R2NUdTNCSFRnclBNc1hWcjNkRTBMRUdPVFJuRjNpQk43TU1PRThaelZCN0loVnlTeVd3PSIsIml2UGFyYW1ldGVyU3BlYyI6IkdtR3J4djF2aEU3a2txSUUiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)]
+[![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoicTFDbGEvQ3JEZzVSc3MzYml4KzNZUnFKYWlwZmsraStXRkQ5R2NUdTNCSFRnclBNc1hWcjNkRTBMRUdPVFJuRjNpQk43TU1PRThaelZCN0loVnlTeVd3PSIsIml2UGFyYW1ldGVyU3BlYyI6IkdtR3J4djF2aEU3a2txSUUiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)](https://github.com/PertsevRoman/kafka-viewer)
 
 
 Kafka Viewer repository
