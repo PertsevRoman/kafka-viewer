@@ -33,8 +33,6 @@ public class AvroRecordsGenerator<T extends SpecificRecordBase> {
 
         return dataStream
                 .map(record -> new ProducerRecord<>(topicName, index.getAndIncrement(), record))
-                .peek(record -> {
-                    record.headers().add("AVRO-SCHEMA-HASH", fingerprint);
-                });
+                .peek(record -> record.headers().add("AVRO-SCHEMA-HASH", fingerprint));
     }
 }
