@@ -4,13 +4,18 @@ import com.kafka.viewer.avro.Order;
 import com.kafka.viewer.generator.OrderGenerator;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.LongSerializer;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Roman Pertsev <roman.pertsev@nordigy.ru>
@@ -38,6 +43,10 @@ class MessageSenderTest {
 
     private MessageSender<Order> messageSender;
 
+    private List<ProducerRecord<Long, Order>> history;
+
+    private String topicName;
+
     @BeforeEach
     void setUp() throws NoSuchMethodException, NoSuchAlgorithmException,
             IllegalAccessException, InvocationTargetException {
@@ -58,16 +67,36 @@ class MessageSenderTest {
 
         avroRecordsGenerator = new AvroRecordsGenerator<>(Order.class);
 
-        producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, "orders-topic");
+        topicName = "orders-topic";
+        producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, topicName);
 
-        producer = new MockProducer<>();
+        producer = new MockProducer<>(
+                false, null,
+                new LongSerializer(),
+                new AvroSerializer<>()
+        );
 
         messageSender = new MessageSender<>();
 
         messageSender.send(producerRecordStream, producer);
+
+        history = producer.history();
     }
 
     @Test
-    void producerCheck() {
+    @DisplayName("Producer send check")
+    void producerSendCheck() {
+        final long historySize = history.size();
+
+        assertThat(historySize).isEqualTo(count);
+    }
+
+    @Test
+    @DisplayName("Producer content check")
+    void producerContentCheck() {
+        history
+                .stream()
+                .map(ProducerRecord::topic)
+        .forEach(recordTopic -> assertThat(recordTopic).isEqualTo(topicName));
     }
 }
