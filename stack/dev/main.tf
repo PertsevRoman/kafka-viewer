@@ -29,7 +29,7 @@ EOF
 
 resource "aws_iam_role_policy" "codebuild_policy" {
   role = aws_iam_role.codebuild_role.id
-  policy = <<POLICY
+  policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -81,7 +81,7 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         }
     ]
 }
-POLICY
+EOF
 
   provider = "aws.aws_develop_env"
 }

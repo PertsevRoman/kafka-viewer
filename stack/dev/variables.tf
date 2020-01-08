@@ -1,7 +1,9 @@
+// Project name
 variable "project_name" {
   type = string
 }
 
+// AWS credentials
 variable "aws_profile" {
   type = string
   default = "default"
@@ -16,6 +18,7 @@ variable "aws_account_id" {
   type = string
 }
 
+// GitHub repository
 variable "github_location" {
   type = string
 }
