@@ -1,6 +1,12 @@
 version: 0.2
 
 phases:
+  env:
+    parameter-store:
+      DOCKER_USERNAME: "/dockerhub/username"
+      DOCKER_PASSWORD: "/dockerhub/password"
+      DOCKER_REGISTRY: "/dockerhub/registry"
+      DOCKER_IMAGE: "/dockerhub/image"
   install:
     runtime-versions:
       nodejs: 10
@@ -8,11 +14,7 @@ phases:
       java: openjdk11
   pre_build:
     commands:
-      - java -version
-      - mvn --version
-      - node --version
-      - npm --version
-      - docker --version
+      - docker login -u ${DOCKER_USERNAME} --password-stdin | echo ${DOCKER_PASSWORD}
   build:
     commands:
       - cd backend
@@ -22,4 +24,5 @@ phases:
       - npm ci --quiet
       - npm run build:prod
       - cd ..
-      - docker build . -t kafka-viewer
+      - docker build . -t ${DOCKER_REGISTRY}/${DOCKER_IMAGE}
+      - docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}

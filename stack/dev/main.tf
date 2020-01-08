@@ -4,6 +4,8 @@ provider "aws" {
   allowed_account_ids = [
     var.aws_account_id
   ]
+
+  alias = "aws_develop_env"
 }
 
 resource "aws_iam_role" "codebuild_role" {
@@ -21,6 +23,8 @@ resource "aws_iam_role" "codebuild_role" {
   ]
 }
 EOF
+
+  provider = "aws.aws_develop_env"
 }
 
 resource "aws_iam_role_policy" "codebuild_policy" {
@@ -56,6 +60,15 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         },
         {
             "Effect": "Allow",
+            "Resource": [
+                "arn:aws:ssm:${var.aws_region}:${var.aws_account_id}:/parameter/*/*"
+            ],
+            "Action": [
+                "ssm:GetParameters"
+            ]
+        },
+        {
+            "Effect": "Allow",
             "Action": [
                 "codebuild:CreateReportGroup",
                 "codebuild:CreateReport",
@@ -69,6 +82,8 @@ resource "aws_iam_role_policy" "codebuild_policy" {
     ]
 }
 POLICY
+
+  provider = "aws.aws_develop_env"
 }
 
 resource "aws_codebuild_project" "code-build" {
@@ -92,6 +107,8 @@ resource "aws_codebuild_project" "code-build" {
     location = var.github_location
     git_clone_depth = 1
   }
+
+  provider = "aws.aws_develop_env"
 }
 
 resource "aws_codebuild_webhook" "all_push_webhook" {
@@ -108,4 +125,6 @@ resource "aws_codebuild_webhook" "all_push_webhook" {
       pattern = "^refs/heads/develop$"
     }
   }
+
+  provider = "aws.aws_develop_env"
 }
