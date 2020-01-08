@@ -61,7 +61,10 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         {
             "Effect": "Allow",
             "Resource": [
-                "*"
+                "${aws_ssm_parameter.docker_username.arn}",
+                "${aws_ssm_parameter.docker_password.arn}",
+                "${aws_ssm_parameter.docker_registry.arn}",
+                "${aws_ssm_parameter.docker_image.arn}"
             ],
             "Action": [
                 "ssm:GetParameters"
