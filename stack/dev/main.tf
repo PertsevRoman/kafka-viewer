@@ -61,7 +61,7 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         {
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:ssm:${var.aws_region}:${var.aws_account_id}:/parameter/*/*"
+                "*"
             ],
             "Action": [
                 "ssm:GetParameters"
