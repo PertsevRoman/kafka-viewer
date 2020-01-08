@@ -13,6 +13,8 @@ phases:
       nodejs: 10
       docker: 18
       java: openjdk11
+    commands:
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
   pre_build:
     commands:
       - docker login -u ${DOCKER_USERNAME} --password-stdin | echo ${DOCKER_PASSWORD}

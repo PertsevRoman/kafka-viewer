@@ -100,6 +100,7 @@ resource "aws_codebuild_project" "code-build" {
     image                       = "aws/codebuild/standard:3.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
   }
 
   source {
