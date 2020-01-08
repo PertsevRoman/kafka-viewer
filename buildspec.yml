@@ -1,12 +1,13 @@
 version: 0.2
 
+env:
+  parameter-store:
+    DOCKER_USERNAME: "/dockerhub/username"
+    DOCKER_PASSWORD: "/dockerhub/password"
+    DOCKER_REGISTRY: "/dockerhub/registry"
+    DOCKER_IMAGE: "/dockerhub/image"
+
 phases:
-  env:
-    parameter-store:
-      DOCKER_USERNAME: "/dockerhub/username"
-      DOCKER_PASSWORD: "/dockerhub/password"
-      DOCKER_REGISTRY: "/dockerhub/registry"
-      DOCKER_IMAGE: "/dockerhub/image"
   install:
     runtime-versions:
       nodejs: 10
