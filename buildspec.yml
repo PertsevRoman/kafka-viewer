@@ -33,7 +33,7 @@ phases:
       - docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}
 
 reports:
-  report_name:
+  producer_tests:
     files:
       - "**/*"
     base-directory: backend/kafka-producer/target/surefire-reports
