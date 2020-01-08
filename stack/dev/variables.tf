@@ -19,3 +19,20 @@ variable "aws_account_id" {
 variable "github_location" {
   type = string
 }
+
+// DockerHub parameters
+variable "docker_username" {
+  type = string
+}
+
+variable "docker_password" {
+  type = string
+}
+
+variable "docker_registry" {
+  type = string
+}
+
+variable "docker_image" {
+  type = string
+}

@@ -4,6 +4,8 @@ provider "aws" {
   allowed_account_ids = [
     var.aws_account_id
   ]
+
+  alias = "aws_develop_env"
 }
 
 resource "aws_iam_role" "codebuild_role" {
@@ -21,6 +23,8 @@ resource "aws_iam_role" "codebuild_role" {
   ]
 }
 EOF
+
+  provider = "aws.aws_develop_env"
 }
 
 resource "aws_iam_role_policy" "codebuild_policy" {
@@ -32,8 +36,8 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         {
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/codebuild/${var.project_name}",
-                "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/codebuild/${var.project_name}:*"
+                "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/codebuild/${var.project_name}-build",
+                "arn:aws:logs:${var.aws_region}:${var.aws_account_id}:log-group:/aws/codebuild/${var.project_name}-build:*"
             ],
             "Action": [
                 "logs:CreateLogGroup",
@@ -56,6 +60,15 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         },
         {
             "Effect": "Allow",
+            "Resource": [
+                "*"
+            ],
+            "Action": [
+                "ssm:GetParameters"
+            ]
+        },
+        {
+            "Effect": "Allow",
             "Action": [
                 "codebuild:CreateReportGroup",
                 "codebuild:CreateReport",
@@ -69,6 +82,8 @@ resource "aws_iam_role_policy" "codebuild_policy" {
     ]
 }
 POLICY
+
+  provider = "aws.aws_develop_env"
 }
 
 resource "aws_codebuild_project" "code-build" {
@@ -82,9 +97,10 @@ resource "aws_codebuild_project" "code-build" {
 
   environment {
     compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:1.0"
+    image                       = "aws/codebuild/standard:3.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+    privileged_mode             = true
   }
 
   source {
@@ -92,4 +108,24 @@ resource "aws_codebuild_project" "code-build" {
     location = var.github_location
     git_clone_depth = 1
   }
+
+  provider = "aws.aws_develop_env"
+}
+
+resource "aws_codebuild_webhook" "all_push_webhook" {
+  project_name = "${var.project_name}-build"
+
+  filter_group {
+    filter {
+      type = "EVENT"
+      pattern = "PUSH"
+    }
+
+    filter {
+      type = "HEAD_REF"
+      pattern = "^refs/heads/develop$"
+    }
+  }
+
+  provider = "aws.aws_develop_env"
 }
