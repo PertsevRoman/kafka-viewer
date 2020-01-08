@@ -11,7 +11,7 @@ resource "aws_ssm_parameter" "docker_password" {
   name = "/dockerhub/password"
   description = "DockerHub password"
   type = "SecureString"
-  value = var.docker_username
+  value = var.docker_password
 
   provider = "aws.aws_develop_env"
 }
