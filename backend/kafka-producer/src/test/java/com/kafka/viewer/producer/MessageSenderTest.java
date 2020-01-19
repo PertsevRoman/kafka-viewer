@@ -18,11 +18,16 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * @author Roman Pertsev <roman.pertsev@nordigy.ru>
+ * Test message sending
  */
 class MessageSenderTest {
 
-    private AvroRecordsGenerator<Order> avroRecordsGenerator;
+    private final LongSerializer longSerializer = new LongSerializer();
+
+    private final AvroSerializer<Order> avroSerializer = new AvroSerializer<>();
+
+    private final AvroRecordsGenerator<Order> avroRecordsGenerator =
+            new AvroRecordsGenerator<>(Order.class);
 
     // Records count
     private Long count = 100L;
@@ -41,11 +46,11 @@ class MessageSenderTest {
 
     private MockProducer<Long, Order> producer;
 
-    private MessageSender<Order> messageSender;
+    private MessageSender<Order> messageSender  = new MessageSender<>();
 
     private List<ProducerRecord<Long, Order>> history;
 
-    private String topicName;
+    private String topicName = "orders-topic";
 
     @BeforeEach
     void setUp() throws NoSuchMethodException, NoSuchAlgorithmException,
@@ -63,20 +68,17 @@ class MessageSenderTest {
 
         generatorProperties.setProperty(OrderGenerator.OrderGeneratorProperty.COUNT, String.valueOf(count));
 
-        ordersStream = orderGenerator.generateWith(generatorProperties);
+        ordersStream = orderGenerator
+                .generateWith(generatorProperties);
 
-        avroRecordsGenerator = new AvroRecordsGenerator<>(Order.class);
-
-        topicName = "orders-topic";
         producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, topicName);
 
         producer = new MockProducer<>(
-                false, null,
-                new LongSerializer(),
-                new AvroSerializer<>()
+                false,
+                null,
+                longSerializer,
+                avroSerializer
         );
-
-        messageSender = new MessageSender<>();
 
         messageSender.send(producerRecordStream, producer);
 
