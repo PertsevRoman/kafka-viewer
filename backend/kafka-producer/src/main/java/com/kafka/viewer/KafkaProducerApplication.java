@@ -1,7 +1,6 @@
 package com.kafka.viewer;
 
-import com.kafka.viewer.avro.Customer;
-import org.apache.kafka.clients.producer.KafkaProducer;
+import com.kafka.viewer.config.PropertiesLoader;
 
 import java.util.Properties;
 
@@ -12,11 +11,13 @@ import java.util.Properties;
 public class KafkaProducerApplication 
 {
     public static void main( String[] args ) {
-        Properties properties = new Properties();
+        final Properties properties = PropertiesLoader.getProperties();
+        
+        int i = 0;
 
-        try (KafkaProducer<Long, Customer> producer = new KafkaProducer<>(properties)) {
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try (KafkaProducer<Long, Customer> producer = new KafkaProducer<>(properties)) {
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 }
