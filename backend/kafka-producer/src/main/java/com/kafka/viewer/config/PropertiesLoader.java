@@ -1,13 +1,12 @@
 package com.kafka.viewer.config;
 
-import org.apache.commons.lang3.StringUtils;
+import com.kafka.viewer.config.property.EnvironmentPropertyResolver;
+import com.kafka.viewer.config.property.ResolvedProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.stream.Collectors;
 
 public class PropertiesLoader {
     
@@ -15,7 +14,7 @@ public class PropertiesLoader {
     /**
      * Raw properties store
      */
-    private static Properties properties;
+    private static ResolvedProperties properties;
 
     /**
      * 
@@ -23,7 +22,12 @@ public class PropertiesLoader {
     private static final String propertiesFilePath = "application.properties";
 
     static {
-        properties = new EnvProperties();
+        properties = new ResolvedProperties();
+
+        final EnvironmentPropertyResolver environmentPropertyResolver =
+                new EnvironmentPropertyResolver();
+
+        properties.registerPropertyResolver(environmentPropertyResolver);
 
         try (InputStream resourceAsStream = ClassLoader
                 .getSystemClassLoader()

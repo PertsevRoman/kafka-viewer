@@ -18,7 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Roman Pertsev <roman.pertsev@nordigy.ru>
  */
 class AvroRecordsGeneratorTest {
+
     private AvroRecordsGenerator<Order> avroRecordsGenerator;
+
+    private final String topicName = "orders-topic";
 
     // Records count
     private Long count = 100L;
@@ -56,7 +59,7 @@ class AvroRecordsGeneratorTest {
 
         avroRecordsGenerator = new AvroRecordsGenerator<>(Order.class);
 
-        producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, "orders-topic");
+        producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, topicName);
     }
 
     @Test

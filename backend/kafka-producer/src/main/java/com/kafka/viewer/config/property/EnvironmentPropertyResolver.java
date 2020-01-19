@@ -1,28 +1,17 @@
-package com.kafka.viewer.config;
+package com.kafka.viewer.config.property;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Objects;
-import java.util.Properties;
 
-public class EnvProperties extends Properties {
+/**
+ * Resolve property from environment variables
+ */
+public class EnvironmentPropertyResolver implements PropertyResolver {
+
     @Override
-    public synchronized Object put(Object key, Object value) {
-        if (value instanceof String) {
-            return super.put(key, resolvePropertyValue((String) value));
-        }
+    public String resolveProperty(String key, String propertyValue) {
 
-        return super.put(key, value);
-    }
-
-    /**
-     * Resolve property value from env variable or default value
-     * 
-     * @param propertyValue Property value
-     * 
-     * @return
-     */
-    private static String resolvePropertyValue(String propertyValue) {
         if (!Objects.isNull(propertyValue)) {
             ConfigPair configPair = ConfigPair.parsePair(propertyValue);
 
@@ -41,13 +30,9 @@ public class EnvProperties extends Properties {
                         }
                     }
                 }
-            } else {
-                if (!StringUtils.isEmpty(propertyValue)) {
-                    return propertyValue;
-                }
             }
         }
 
-        throw new IllegalArgumentException("Can't find property " + propertyValue);
+        return null;
     }
 }

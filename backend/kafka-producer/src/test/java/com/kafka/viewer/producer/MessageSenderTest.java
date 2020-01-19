@@ -59,14 +59,17 @@ class MessageSenderTest {
 
         Properties generatorProperties = new Properties();
 
-        generatorProperties.setProperty(OrderGenerator.OrderGeneratorProperty.ID_MIN, String.valueOf(idMin));
+        generatorProperties.setProperty(OrderGenerator
+                .OrderGeneratorProperty.ID_MIN, String.valueOf(idMin));
 
         generatorProperties.setProperty(OrderGenerator
                 .OrderGeneratorProperty.TIMESTAMP_MIN, String.valueOf(timestampMin));
+
         generatorProperties.setProperty(OrderGenerator
                 .OrderGeneratorProperty.TIMESTAMP_MAX, String.valueOf(timestampMax));
 
-        generatorProperties.setProperty(OrderGenerator.OrderGeneratorProperty.COUNT, String.valueOf(count));
+        generatorProperties.setProperty(OrderGenerator.OrderGeneratorProperty.COUNT,
+                String.valueOf(count));
 
         ordersStream = orderGenerator
                 .generateWith(generatorProperties);
@@ -90,7 +93,8 @@ class MessageSenderTest {
     void producerSendCheck() {
         final long historySize = history.size();
 
-        assertThat(historySize).isEqualTo(count);
+        assertThat(historySize)
+                .isEqualTo(count);
     }
 
     @Test
@@ -99,6 +103,7 @@ class MessageSenderTest {
         history
                 .stream()
                 .map(ProducerRecord::topic)
-        .forEach(recordTopic -> assertThat(recordTopic).isEqualTo(topicName));
+                .forEach(recordTopic -> assertThat(recordTopic)
+                    .isEqualTo(topicName));
     }
 }
