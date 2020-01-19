@@ -40,7 +40,7 @@ public class AvroSerializer<T extends SpecificRecordBase> implements Serializer<
             }
 
             return result;
-        } catch (IOException ex) {
+        } catch (NullPointerException | IOException ex) {
             throw new SerializationException(
                     "Can't serialize data='" + data + "' for topic='" + topic + "'", ex);
         }
