@@ -7,7 +7,7 @@ public class ProducerProperty {
     public static final String KAFKA_TOPIC = "kafka.topic";
 
     /**
-     * 
+     * Fingerprint header key
      */
     public static final String HEADER_KEY = "header.key";
 }
