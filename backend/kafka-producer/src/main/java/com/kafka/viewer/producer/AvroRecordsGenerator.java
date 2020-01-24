@@ -30,7 +30,7 @@ public class AvroRecordsGenerator<T extends SpecificRecordBase> {
         final Method getClassSchemaMethod = clazz.getMethod("getClassSchema");
         final Schema schema = (Schema) getClassSchemaMethod.invoke(null);
 
-        AtomicLong index = new AtomicLong();
+        AtomicLong index = new AtomicLong(1L);
 
         final Properties properties = PropertiesLoader.getProperties();
 
