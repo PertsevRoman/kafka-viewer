@@ -4,6 +4,7 @@ import com.kafka.viewer.avro.Order;
 import com.kafka.viewer.config.ProducerProperty;
 import com.kafka.viewer.config.PropertiesLoader;
 import com.kafka.viewer.generator.OrderGenerator;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 class AvroRecordsGeneratorTest {
 
-    private AvroRecordsGenerator<Order> avroRecordsGenerator;
+    private AvroRecordsGenerator avroRecordsGenerator;
 
     private final String topicName = "orders-topic";
 
@@ -38,7 +39,7 @@ class AvroRecordsGeneratorTest {
     // Orders stream
     private Stream<Order> ordersStream;
 
-    private Stream<ProducerRecord<Long, Order>> producerRecordStream;
+    private Stream<? extends ProducerRecord<Long, ? extends SpecificRecordBase>> producerRecordStream;
 
     @BeforeEach
     void setUp() throws NoSuchMethodException,
@@ -59,7 +60,7 @@ class AvroRecordsGeneratorTest {
 
         ordersStream = orderGenerator.generateWith(generatorProperties);
 
-        avroRecordsGenerator = new AvroRecordsGenerator<>(Order.class);
+        avroRecordsGenerator = new AvroRecordsGenerator();
 
         producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, topicName);
     }

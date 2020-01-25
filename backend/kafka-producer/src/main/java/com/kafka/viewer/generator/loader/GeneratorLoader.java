@@ -28,7 +28,7 @@ public class GeneratorLoader {
      * @throws InvocationTargetException
      * @throws InstantiationException
      */
-    public static RecordGenerator<?> loadGenerator(String generatorClass)
+    public static RecordGenerator loadGenerator(String generatorClass)
             throws ClassNotFoundException, IllegalAccessException,
             InvocationTargetException, InstantiationException {
 
@@ -44,7 +44,7 @@ public class GeneratorLoader {
         final Constructor<?>[] constructors = dataClass.getConstructors();
         for (Constructor<?> constructor : constructors) {
             if (constructor.getParameterCount() == 0) {
-                return (RecordGenerator<?>) constructor.newInstance();
+                return (RecordGenerator) constructor.newInstance();
             }
         }
 

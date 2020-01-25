@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 /**
  */
-public class OrderGenerator implements RecordGenerator<Order> {
+public class OrderGenerator implements RecordGenerator {
 
     private Random RANDOM;
 
@@ -22,16 +22,16 @@ public class OrderGenerator implements RecordGenerator<Order> {
     public Stream<Order> generateWith(Properties properties) {
 
         final long idMin = Long
-                .parseLong(properties.getProperty(OrderGeneratorProperty.ID_MIN));
+                .parseLong(properties.getProperty(OrderGeneratorProperty.ID_MIN, "1"));
 
         final long timestampMin = Long
-                .parseLong(properties.getProperty(OrderGeneratorProperty.TIMESTAMP_MIN));
+                .parseLong(properties.getProperty(OrderGeneratorProperty.TIMESTAMP_MIN, "0"));
 
         final long timestampMax = Long
-                .parseLong(properties.getProperty(OrderGeneratorProperty.TIMESTAMP_MAX));
+                .parseLong(properties.getProperty(OrderGeneratorProperty.TIMESTAMP_MAX, "1000"));
 
         final long count = Long
-                .parseLong(properties.getProperty(OrderGeneratorProperty.COUNT));
+                .parseLong(properties.getProperty(OrderGeneratorProperty.COUNT, "100"));
 
         RANDOM = new Random();
 

@@ -1,7 +1,9 @@
 package com.kafka.viewer.producer;
 
-import com.kafka.viewer.avro.Order;
 import com.kafka.viewer.generator.OrderGenerator;
+import com.kafka.viewer.generator.RecordGenerator;
+import com.kafka.viewer.generator.loader.GeneratorLoader;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.MockProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.LongSerializer;
@@ -10,7 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -24,10 +25,8 @@ class MessageSenderTest {
 
     private final LongSerializer longSerializer = new LongSerializer();
 
-    private final AvroSerializer<Order> avroSerializer = new AvroSerializer<>();
-
-    private final AvroRecordsGenerator<Order> avroRecordsGenerator =
-            new AvroRecordsGenerator<>(Order.class);
+    private final AvroSerializer<SpecificRecordBase> avroSerializer =
+            new AvroSerializer<>();
 
     // Records count
     private Long count = 100L;
@@ -40,22 +39,28 @@ class MessageSenderTest {
     private Long timestampMax = 50000L;
 
     // Orders stream
-    private Stream<Order> ordersStream;
+    private Stream<? extends SpecificRecordBase> ordersStream;
 
-    private Stream<ProducerRecord<Long, Order>> producerRecordStream;
 
-    private MockProducer<Long, Order> producer;
+    private MockProducer<Long, SpecificRecordBase> producer;
 
-    private MessageSender<Order> messageSender  = new MessageSender<>();
-
-    private List<ProducerRecord<Long, Order>> history;
+    private List<ProducerRecord<Long, SpecificRecordBase>> history;
 
     private String topicName = "orders-topic";
 
+    private String generatorClass;
+    private RecordGenerator avroRecordsGenerator;
+
+    private Stream<? extends ProducerRecord<Long, SpecificRecordBase>> producerRecordStream;
+
     @BeforeEach
-    void setUp() throws NoSuchMethodException, NoSuchAlgorithmException,
-            IllegalAccessException, InvocationTargetException {
-        OrderGenerator orderGenerator = new OrderGenerator();
+    void setUp() throws IllegalAccessException, InvocationTargetException,
+            InstantiationException, ClassNotFoundException {
+
+        generatorClass = "com.kafka.viewer.generator.CustomerGenerator";
+
+        avroRecordsGenerator =
+                GeneratorLoader.loadGenerator(generatorClass);
 
         Properties generatorProperties = new Properties();
 
@@ -71,10 +76,7 @@ class MessageSenderTest {
         generatorProperties.setProperty(OrderGenerator.OrderGeneratorProperty.COUNT,
                 String.valueOf(count));
 
-        ordersStream = orderGenerator
-                .generateWith(generatorProperties);
-
-        producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, topicName);
+        ordersStream = avroRecordsGenerator.generateWith(generatorProperties);
 
         producer = new MockProducer<>(
                 false,
@@ -83,7 +85,10 @@ class MessageSenderTest {
                 avroSerializer
         );
 
-        messageSender.send(producerRecordStream, producer);
+        AvroRecordsGenerator generator = new AvroRecordsGenerator();
+        producerRecordStream = generator.recordStream(ordersStream, topicName);
+
+        MessageSender.send(producerRecordStream, producer);
 
         history = producer.history();
     }

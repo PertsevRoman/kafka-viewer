@@ -9,8 +9,10 @@ import java.util.stream.Stream;
 /**
  * @author Roman Pertsev <roman.pertsev@nordigy.ru>
  */
-public class MessageSender <T extends SpecificRecordBase> {
-    public void send(Stream<ProducerRecord<Long, T>> messagesStream, Producer<Long, T> producer) {
-        messagesStream.forEach(producer::send);
+public class MessageSender {
+
+    public static void send(Stream<? extends ProducerRecord<Long, SpecificRecordBase>> stream,
+                            Producer<Long, SpecificRecordBase> producer) {
+        stream.forEach(producer::send);
     }
 }

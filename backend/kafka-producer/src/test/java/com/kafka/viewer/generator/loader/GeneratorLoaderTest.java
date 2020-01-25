@@ -20,7 +20,7 @@ class GeneratorLoaderTest {
 
         // When
         assertThatCode(() -> {
-            final RecordGenerator<?> recordGenerator =
+            final RecordGenerator recordGenerator =
                     GeneratorLoader.loadGenerator(generatorClass);
 
             // Then
