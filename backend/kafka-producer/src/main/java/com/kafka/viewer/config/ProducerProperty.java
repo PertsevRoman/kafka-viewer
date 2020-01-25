@@ -10,4 +10,9 @@ public class ProducerProperty {
      * Fingerprint header key
      */
     public static final String HEADER_KEY = "header.key";
+
+    /**
+     * Generator class
+     */
+    public static final String GENERATOR_CLASS = "generator.class";
 }
