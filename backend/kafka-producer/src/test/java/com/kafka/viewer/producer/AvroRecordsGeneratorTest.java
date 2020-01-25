@@ -42,8 +42,7 @@ class AvroRecordsGeneratorTest {
     private Stream<? extends ProducerRecord<Long, ? extends SpecificRecordBase>> producerRecordStream;
 
     @BeforeEach
-    void setUp() throws NoSuchMethodException,
-            NoSuchAlgorithmException, IllegalAccessException, InvocationTargetException {
+    void setUp() {
 
         OrderGenerator orderGenerator = new OrderGenerator();
 

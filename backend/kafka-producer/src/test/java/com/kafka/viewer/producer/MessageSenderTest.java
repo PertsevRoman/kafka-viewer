@@ -57,7 +57,7 @@ class MessageSenderTest {
     void setUp() throws IllegalAccessException, InvocationTargetException,
             InstantiationException, ClassNotFoundException {
 
-        generatorClass = "com.kafka.viewer.generator.CustomerGenerator";
+        generatorClass = "com.kafka.viewer.generator.OrderGenerator";
 
         avroRecordsGenerator =
                 GeneratorLoader.loadGenerator(generatorClass);
