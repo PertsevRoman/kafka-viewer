@@ -1,7 +1,10 @@
 package com.kafka.viewer.producer;
 
 import com.kafka.viewer.avro.Order;
+import com.kafka.viewer.config.ProducerProperty;
+import com.kafka.viewer.config.PropertiesLoader;
 import com.kafka.viewer.generator.OrderGenerator;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Roman Pertsev <roman.pertsev@nordigy.ru>
  */
 class AvroRecordsGeneratorTest {
-    private AvroRecordsGenerator<Order> avroRecordsGenerator;
+
+    private AvroRecordsGenerator avroRecordsGenerator;
+
+    private final String topicName = "orders-topic";
 
     // Records count
     private Long count = 100L;
@@ -33,11 +39,10 @@ class AvroRecordsGeneratorTest {
     // Orders stream
     private Stream<Order> ordersStream;
 
-    private Stream<ProducerRecord<Long, Order>> producerRecordStream;
+    private Stream<? extends ProducerRecord<Long, ? extends SpecificRecordBase>> producerRecordStream;
 
     @BeforeEach
-    void setUp() throws NoSuchMethodException,
-            NoSuchAlgorithmException, IllegalAccessException, InvocationTargetException {
+    void setUp() {
 
         OrderGenerator orderGenerator = new OrderGenerator();
 
@@ -54,9 +59,9 @@ class AvroRecordsGeneratorTest {
 
         ordersStream = orderGenerator.generateWith(generatorProperties);
 
-        avroRecordsGenerator = new AvroRecordsGenerator<>(Order.class);
+        avroRecordsGenerator = new AvroRecordsGenerator();
 
-        producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, "orders-topic");
+        producerRecordStream = avroRecordsGenerator.recordStream(ordersStream, topicName);
     }
 
     @Test
@@ -70,9 +75,16 @@ class AvroRecordsGeneratorTest {
     @Test
     @DisplayName("Headers test")
     void headersTest() {
+        final Properties properties = PropertiesLoader.getProperties();
+
+        String headerKey = properties.getProperty(ProducerProperty.HEADER_KEY);
+        
+        assertThat(headerKey).isNotEmpty();
+
         producerRecordStream
                 .forEach(record -> assertThat(
-                        record.headers().lastHeader("AVRO-SCHEMA-HASH"))
+                        record.headers()
+                                .lastHeader(headerKey))
                             .isNotNull());
     }
 }

@@ -1,6 +1,7 @@
 package com.kafka.viewer.config;
 
-import org.apache.commons.lang3.StringUtils;
+import com.kafka.viewer.config.property.EnvironmentPropertyResolver;
+import com.kafka.viewer.config.property.ResolvedProperties;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,54 +9,39 @@ import java.util.Objects;
 import java.util.Properties;
 
 public class PropertiesLoader {
-    private static Properties properties;
+    
+
+    /**
+     * Raw properties store
+     */
+    private static ResolvedProperties properties;
+
+    /**
+     * 
+     */
+    private static final String propertiesFilePath = "application.properties";
 
     static {
-        properties = new Properties();
+        properties = new ResolvedProperties();
 
-        String filePath = "application.properties";
+        final EnvironmentPropertyResolver environmentPropertyResolver =
+                new EnvironmentPropertyResolver();
+
+        properties.registerPropertyResolver(environmentPropertyResolver);
 
         try (InputStream resourceAsStream = ClassLoader
                 .getSystemClassLoader()
-                .getResourceAsStream(filePath)) {
+                .getResourceAsStream(propertiesFilePath)) {
 
             if (!Objects.isNull(resourceAsStream)) {
                 properties.load(resourceAsStream);
             }
         } catch (IOException e) {
-            System.err.println("Unable to load properties file : " + filePath);
+            System.err.println("Unable to load properties file : " + propertiesFilePath);
         }
     }
-    
-    public static String getProperty(String name) {
-        return resolvePropertyValue(properties.getProperty(name));
-    }
 
-    private static String resolvePropertyValue(String propertyValue) {
-        if (!Objects.isNull(propertyValue)) {
-            ConfigPair configPair = ConfigPair.parsePair(propertyValue);
-
-            if (!Objects.isNull(configPair)) {
-                String defaultValue = configPair.getDefaultValue();
-                String envName = configPair.getEnvName();
-
-                if (!Objects.isNull(envName)) {
-                    String envValue = System.getenv(envName);
-
-                    if (!StringUtils.isEmpty(envValue)) {
-                        return envValue;
-                    } else {
-                        if (!StringUtils.isEmpty(defaultValue)) {
-                            return defaultValue;
-                        }
-                    }
-                }
-            } else {
-                if (!StringUtils.isEmpty(propertyValue)) {
-                    return propertyValue;
-                }
-            }
-        }
-        return null;
+    public static Properties getProperties() {
+        return properties;
     }
 }

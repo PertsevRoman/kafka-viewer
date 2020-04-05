@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * @author Roman Pertsev <roman.pertsev@nordigy.ru>
  */
-public class CustomerGenerator implements RecordGenerator<Customer> {
+public class CustomerGenerator implements RecordGenerator {
 
     private Random RANDOM;
 
@@ -22,13 +22,13 @@ public class CustomerGenerator implements RecordGenerator<Customer> {
     public Stream<Customer> generateWith(Properties properties) {
 
         final int idMin = Integer
-                .parseInt(properties.getProperty(CustomerGeneratorProperty.ID_MIN));
+                .parseInt(properties.getProperty(CustomerGeneratorProperty.ID_MIN, "1"));
 
         final int count = Integer
-                .parseInt(properties.getProperty(CustomerGeneratorProperty.COUNT));
+                .parseInt(properties.getProperty(CustomerGeneratorProperty.COUNT, "100"));
 
         final String[] names = properties
-                .getProperty(CustomerGeneratorProperty.NAMES).split(",");
+                .getProperty(CustomerGeneratorProperty.NAMES, "Name").split(",");
 
 
         RANDOM = new Random();
